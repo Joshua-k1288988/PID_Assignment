@@ -1,0 +1,36 @@
+CREATE DATABASE shopDB DEFAULT CHARACTER SET utf8;
+USE shopDB;
+
+CREATE TABLE userList(
+    userName varchar(20),
+    userID varchar(20) PRIMARY KEY,
+    password varchar(100),
+    whiteORblack int
+);
+
+CREATE TABLE shopList(
+    shopName varchar(50),
+    shopID varchar(20) PRIMARY KEY,
+    price int,
+    shopLab varchar(500),
+    shopPicture varchar(20)
+);
+
+CREATE TABLE buyList(
+    buyID int AUTO_INCREMENT PRIMARY KEY,
+    userID varchar(20),
+    shopID varchar(20),
+    price int,
+    number int ,
+    count int ,
+    time varchar(30),
+    sta varchar(20),
+    FOREIGN KEY (userID) REFERENCES userList(userID),
+    FOREIGN KEY (shopID) REFERENCES shopList(shopID)
+);
+
+CREATE TABLE rootList(
+    userName varchar(20),
+    userID varchar(20) PRIMARY KEY,
+    password varchar(100)
+);
