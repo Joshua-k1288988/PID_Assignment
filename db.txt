@@ -13,7 +13,7 @@ CREATE TABLE shopList(
     shopID varchar(20) PRIMARY KEY,
     price int,
     shopLab varchar(500),
-    shopPicture varchar(20)
+    shopPicture varchar(100)
 );
 
 CREATE TABLE buyList(

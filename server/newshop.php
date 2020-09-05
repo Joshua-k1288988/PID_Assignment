@@ -15,42 +15,98 @@
 <body>
 <br>
 <div class="container">
-<form action = "" method = "post">
-  <div class="form-group row">
-    <label for="firstName" class="col-4 col-form-label">first name</label> 
-    <div class="col-8">
-      <input id="firstName" name="firstName" type="text" class="form-control">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="lastName" class="col-4 col-form-label">last name</label> 
-    <div class="col-8">
-      <input id="lastName" name="lastName" type="text" class="form-control">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-4">city</label> 
-    <div class="col-8">
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="cityid" id="cityid_0" type="radio" class="custom-control-input" value="2"> 
-        <label for="cityid_0" class="custom-control-label">Taipei</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="cityid" id="cityid_1" type="radio" class="custom-control-input" value="4"> 
-        <label for="cityid_1" class="custom-control-label">Taichung</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="cityid" id="cityid_2" type="radio" checked="checked" class="custom-control-input" value="6"> 
-        <label for="cityid_2" class="custom-control-label">Tainan</label>
+  <form action = "" method = "post" enctype="multipart/form-data">
+    <div class="form-group row">
+      <label for="shopName" class="col-4 col-form-label text-center">*商品名稱</label> 
+      <div class="col-8">
+        <input id="shopName" name="shopName" type="text" class="form-control">
       </div>
     </div>
-  </div> 
-  <div class="form-group row" >
-    <div class="offset-4 col-8">
-      <button name="okbtn" type="submit" class="btn btn-primary">Submit</button>
+
+    <div class="form-group row">
+      <label for="shopID" class="col-4 col-form-label text-center">*商品代號(數字8~20碼)</label> 
+      <div class="col-8">
+        <input id="shopID" name="shopID" type="text" class="form-control" pattern="[0-9a-zA-Z]{8,20}">
+      </div>
     </div>
-  </div>
-</form>
+
+    <div class="form-group row">
+      <label for="price" class="col-4 col-form-label text-center">*價錢</label> 
+      <div class="col-8">
+        <input id="price" name="price" type="text" class="form-control" pattern="[0-9]{1,}">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="lab" class="col-4 col-form-label text-center">介紹</label> 
+      <div class="col-8">
+        <textarea id="lab" name="lab" row = "5" class="form-control"></textarea>
+      </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <label for="lab" class="col-4 col-form-label text-center">選擇檔案:</label> 
+      <div class="col-8">
+        <input type="file" accept = "image/*" name="file" id="file" />
+      </div>
+    </div>
+    
+    <!-- <input type="submit" name="submit" value="上傳檔案" /> -->
+    <br>
+    <div class="form-group row" >
+      <div class="offset-4 col-8">
+        <button name="okbtn" type="submit" class="btn btn-primary">確定</button>
+      </div>
+    </div>
+  </form>
 </div>
 </body>
 </html>
+
+<?php
+if(isset($_POST["okbtn"])){
+  $shopName = $_POST["shopName"];
+  $shopID = $_POST["shopID"];
+  $price = $_POST["price"];
+  $lab = $_POST["lab"];
+  if($shopID == "" || $shopName == "" || $price == ""){
+    echo "<script> alert('警告：* 為必填欄位');</script>";
+    exit();
+  }
+  if($_FILES["file"]["error"] > 0){
+    $fileName = "";
+    require("linksql.php");
+    $sql = "INSERT INTO shopList (`shopName`, `shopID`, `price`, `shopLab`) VALUES
+    ('$shopName', '$shopID', $price , '$lab');";
+    $revalue = mysqli_query($link, $sql);
+    if($revalue == false){
+      echo "<script> alert('警告：新增失敗');</script>";
+      exit();
+    }else{
+      echo "<script> alert('新增成功'); location.href ='shopLab.php';</script>";
+      exit();
+    }
+
+    echo "Error:" . $fileName;
+  }else{
+    $fileName = $_FILES["file"]["name"];
+    require("linksql.php");
+    $sql = "INSERT INTO shopList (`shopName`, `shopID`, `price`, `shopLab`, shopPicture) VALUES
+    ('$shopName', '$shopID', $price , '$lab', '$fileName');";
+    $revalue = mysqli_query($link, $sql);
+    if($revalue == false){
+      echo "<script> alert('警告：新增失敗');</script>";
+      exit();
+    }else{
+      echo "<script> alert('新增成功'); location.href ='shopLab.php';</script>";
+      move_uploaded_file($_FILES["file"]["tmp_name"], "/Applications/XAMPP/xamppfiles/htdocs/PID_Assignment/client/image/" . $_FILES["file"]["name"]);
+      exit();
+    }
+      // echo "暫存名稱:" . $_FILES["file"]["tmp_name"] . "<br>";
+      // echo "名稱:" . $_FILES["file"]["name"] . "<br>";
+      //var_dump(move_uploaded_file($_FILES["file"]["tmp_name"], "image/" . $_FILES["file"]["name"]));
+      // move_uploaded_file($_FILES["file"]["tmp_name"], "image/" . $_FILES["file"]["name"]);
+  }
+}
+
+?>
