@@ -12,7 +12,7 @@ $resulut = mysqli_query($link , $sqlsetconnect);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>會員清單</title>
+  <title>商品清單</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -23,7 +23,7 @@ $resulut = mysqli_query($link , $sqlsetconnect);
 <body>
 <br><br>
 <div class="container">
-  <h2>會員清單<a href="newshop.php" class = "btn btn-outline-info btn-md float-right">新增</a>
+  <h2>商品清單<a href="newshop.php" class = "btn btn-outline-info btn-md float-right">新增</a>
   </h2>
   <table class="table table-hover">
     <thead>
@@ -38,16 +38,16 @@ $resulut = mysqli_query($link , $sqlsetconnect);
     <tbody>
     <?php while($row = mysqli_fetch_assoc($resulut)) { ?>
       <tr>
-        <td><?php echo $row["shopPicture"] ?></td>
+        <td><img src="http://localhost/PID_Assignment/client/image/<?php if($row["shopPicture"]) {echo $row["shopPicture"];} else{echo "1_II52xSQJ4RKcLwVMLKjgog.png";} ?>" alt="NULL" width="50" height="50">   </td>
         <td><?php echo $row["shopName"] ?></td>
         <td><?php echo $row["shopID"] ?></td>
         <td><?php echo $row["price"] ?></td>
         <td><?php echo $row["shopLab"] ?></td>
         <td>
             <span class = "float-right">
-                <a href="./order.php?userid=<?php echo $row["userID"] ?>" class = "btn-outline-success btn-sm">修改</a>
+                <a href="./changshop.php?shopid=<?php echo $row["shopID"] ?>" class = "btn-outline-success btn-sm">修改</a>
                 |
-                <a href="./daletetable.php?userid=<?php echo $row["userID"] ?>" class = "btn-outline-danger btn-sm">刪除</a>
+                <a href="./deleteshop.php?shopid=<?php echo $row["shopID"] ?>&pict=<?php echo $row["shopPicture"] ?>" class = "btn-outline-danger btn-sm">刪除</a>
             </span>
         </td>
       </tr>
@@ -55,6 +55,8 @@ $resulut = mysqli_query($link , $sqlsetconnect);
     </tbody>
   </table>
 </div>
-
+<div class="container text-center">
+<a href="usecontrol.php" class = "btn-outline-info btn ">返回首頁</a>
+</div>
 </body>
 </html>

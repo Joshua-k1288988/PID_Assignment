@@ -10,7 +10,7 @@ CREATE TABLE userList(
 
 CREATE TABLE shopList(
     shopName varchar(50),
-    shopID varchar(20) PRIMARY KEY,
+    shopID int AUTO_INCREMENT PRIMARY KEY,
     price int,
     shopLab varchar(500),
     shopPicture varchar(100)
@@ -19,7 +19,7 @@ CREATE TABLE shopList(
 CREATE TABLE buyList(
     buyID int AUTO_INCREMENT PRIMARY KEY,
     userID varchar(20),
-    shopID varchar(20),
+    shopID int,
     price int,
     number int ,
     count int ,

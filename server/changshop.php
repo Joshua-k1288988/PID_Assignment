@@ -1,3 +1,22 @@
+<?php
+
+if(!isset($_GET["shopid"])){
+    die ("id not found");
+}
+$shopid = $_GET["shopid"];
+if(! is_numeric($shopid)){
+    die ("id not a number.");
+}
+
+require("linksql.php");
+
+  
+  $sql = "select * from shopList where shopID = $shopid";
+  $resule =  mysqli_query($link,$sql);
+  $row = mysqli_fetch_assoc($resule);
+  // var_dump($row);
+mysqli_close($link);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,21 +38,21 @@
     <div class="form-group row">
       <label for="shopName" class="col-4 col-form-label text-center">*商品名稱</label> 
       <div class="col-8">
-        <input id="shopName" name="shopName" type="text" class="form-control">
+        <input id="shopName" name="shopName" type="text" class="form-control" value = "<?= $row["shopName"] ?>">
       </div>
     </div>
 
     <div class="form-group row">
       <label for="price" class="col-4 col-form-label text-center">*價錢</label> 
       <div class="col-8">
-        <input id="price" name="price" type="text" class="form-control" pattern="[0-9]{1,}">
+        <input id="price" name="price" type="text" class="form-control" pattern="[0-9]{1,}" value = "<?= $row["price"] ?>">
       </div>
     </div>
 
     <div class="form-group row">
       <label for="lab" class="col-4 col-form-label text-center">介紹</label> 
       <div class="col-8">
-        <textarea id="lab" name="lab" row = "5" class="form-control"></textarea>
+        <textarea id="lab" name="lab" row = "5" class="form-control" ><?= $row["shopLab"] ?></textarea>
       </div>
     </div>
     <br>
@@ -65,12 +84,17 @@ if(isset($_POST["okbtn"])){
     echo "<script> alert('警告：* 為必填欄位');</script>";
     exit();
   }
+
   if($_FILES["file"]["error"] > 0){
     $fileName = "";
     require("linksql.php");
-    $sql = "INSERT INTO shopList (`shopName`, `price`, `shopLab`) VALUES
-    ('$shopName', $price , '$lab');";
-    $revalue = mysqli_query($link, $sql);
+    $sql = "update shopList set 
+    shopName = '$shopName',
+    price = $price,
+    shopLab = '$lab',
+    shopPicture = '$fileName'
+    where shopID = $shopid;";
+    $revalue = mysqli_query($link,$sql);
     if($revalue == false){
       echo "<script> alert('警告：新增失敗');</script>";
       exit();
@@ -83,9 +107,13 @@ if(isset($_POST["okbtn"])){
   }else{
     $fileName = $_FILES["file"]["name"];
     require("linksql.php");
-    $sql = "INSERT INTO shopList (`shopName`, `price`, `shopLab`, shopPicture) VALUES
-    ('$shopName', $price , '$lab', '$fileName');";
-    $revalue = mysqli_query($link, $sql);
+    $sql = "update shopList set 
+    shopName = '$shopName',
+    price = $price,
+    shopLab = '$lab',
+    shopPicture = '$fileName'
+    where shopID = $shopid;";
+    $revalue = mysqli_query($link,$sql);
     if($revalue == false){
       echo "<script> alert('警告：新增失敗');</script>";
       exit();
@@ -94,10 +122,6 @@ if(isset($_POST["okbtn"])){
       move_uploaded_file($_FILES["file"]["tmp_name"], "/Applications/XAMPP/xamppfiles/htdocs/PID_Assignment/client/image/" . $_FILES["file"]["name"]);
       exit();
     }
-      // echo "暫存名稱:" . $_FILES["file"]["tmp_name"] . "<br>";
-      // echo "名稱:" . $_FILES["file"]["name"] . "<br>";
-      //var_dump(move_uploaded_file($_FILES["file"]["tmp_name"], "image/" . $_FILES["file"]["name"]));
-      // move_uploaded_file($_FILES["file"]["tmp_name"], "image/" . $_FILES["file"]["name"]);
   }
 }
 

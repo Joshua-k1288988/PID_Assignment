@@ -51,5 +51,8 @@ $resulut = mysqli_query($link , $sqlsetconnect);
   </table>
 </div>
 
+<div class="container text-center">
+<a href="usecontrol.php" class = "btn-outline-info btn ">返回首頁</a>
+</div>
 </body>
 </html>
