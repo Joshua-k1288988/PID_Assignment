@@ -74,6 +74,9 @@
                 if($row["whiteORblack"] == 0){
                     if(password_verify($_POST["userPassword"], $row["password"])){
                         $_SESSION["userID"] = $row["userID"];
+                        $_SESSION["userName"] = $row["userName"];
+                        // echo "<script>alert('登入成功!');location.href='".$_SERVER["HTTP_REFERER"]."';</script>"; 
+                        // header('location: '.$_SERVER['HTTP_REFERER']);
                         header("Location: index.php");
                         exit();
                     }

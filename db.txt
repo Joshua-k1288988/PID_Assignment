@@ -16,17 +16,39 @@ CREATE TABLE shopList(
     shopPicture varchar(100)
 );
 
+CREATE TABLE orderList(
+    orderID int PRIMARY KEY,
+    userID varchar(20),
+    sum int ,
+    time varchar(30),
+    comp varchar(10)
+);
+
 CREATE TABLE buyList(
     buyID int AUTO_INCREMENT PRIMARY KEY,
+    orderID int,
     userID varchar(20),
+    shopName varchar(50),
     shopID int,
     price int,
     number int ,
     count int ,
-    time varchar(30),
-    sta varchar(20),
     FOREIGN KEY (userID) REFERENCES userList(userID),
-    FOREIGN KEY (shopID) REFERENCES shopList(shopID)
+    FOREIGN KEY (shopID) REFERENCES shopList(shopID),
+    FOREIGN KEY (orderID) REFERENCES orderList(orderID)
+);
+
+
+
+CREATE TABLE shoppingcar(
+    shoppingID int AUTO_INCREMENT PRIMARY KEY,
+    userID varchar(20),
+    shopName varchar(50),
+    shopID int,
+    shopPicture varchar(100),
+    price int,
+    number int ,
+    count int 
 );
 
 CREATE TABLE rootList(

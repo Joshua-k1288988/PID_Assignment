@@ -1,5 +1,12 @@
 <?php
   session_start();
+  require("linksql.php");
+  $sql = "
+  select shopName, shopID, price, shopLab, shopPicture
+  FROM shopList
+  ";
+  $revalue = mysqli_query($link, $sql);
+  mysqli_close($link);
 ?>
 
 <!DOCTYPE html>
@@ -16,21 +23,21 @@
 <body>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-    <a class="navbar-brand" href="#">回首頁</a>
+    <a class="navbar-brand" href="">回首頁</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
   <ul class="nav navbar-nav mr-auto">
-    <li class="nav-item">
-      <a class="nav-link " href="#">Link 1</a>
+    <!-- <li class="nav-item">
+      <a class="nav-link " href="#">購物車</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Link 2</a>
     </li>
     <li class="nav-item ">
       <a class="nav-link" href="#">Link 3</a>
-    </li>
+    </li> -->
   </ul>
 
   <ul class="nav navbar-nav "> <!-- d-none -->
@@ -46,7 +53,13 @@
 
     <?php if(@$_SESSION["userID"] != ""){?>
       <li class="nav-item">
-        <a class="nav-link ">您好，ＸＸＸ</a>
+        <a class="nav-link ">您好，<?= $_SESSION["userName"] ?></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link ">|</a>
+      </li>
+      <li class="nav-item">
+      <a class="nav-link " href="shoppingcar.php">購物車</a>
       </li>
       <li class="nav-item">
         <a class="nav-link ">|</a>
@@ -58,15 +71,24 @@
   </ul>
 
 </nav>
-<br><br>
-<br>
 
 
 <div class="container-fluid" style="margin-top:80px">
-  <h3>Basic Navbar Example</h3>
-  <p>A navigation bar is a navigation header that is placed at the top of the page.</p>
-  <p>The navbar-expand-xl|lg|md|sm class determines when the navbar should stack vertically (on extra large, large, medium or small screens).</p>
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <div class="container card-deck card-columns">
+    <?php while($row = mysqli_fetch_assoc($revalue)){  ?>
+      <div class="card" style="  width:300px">
+        <img class="card-img-top" src="image/<?= $row["shopPicture"] ?>" alt="Card image" style="width:100%">
+        <div class="card-body">
+          <h4 class="card-title"><?= $row["shopName"] ?></h4>
+          <p class="card-text">$<?= $row["price"] ?></p>
+          <a href="shoplook.php?shopID=<?= $row["shopID"] ?>" class="btn btn-primary">查看詳情</a>
+        </div>
+      </div>
+    <?php } ?>
+
+
+
+  </div>
 </div>
 
 </body>
