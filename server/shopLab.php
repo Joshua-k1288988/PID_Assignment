@@ -38,7 +38,7 @@ $resulut = mysqli_query($link , $sqlsetconnect);
     <tbody>
     <?php while($row = mysqli_fetch_assoc($resulut)) { ?>
       <tr>
-        <td><img src="http://localhost/PID_Assignment/client/image/<?php if($row["shopPicture"]) {echo $row["shopPicture"];} else{echo "1_II52xSQJ4RKcLwVMLKjgog.png";} ?>" alt="NULL" width="50" height="50">   </td>
+        <td><img src="http://localhost/PID_Assignment/client/image/<?php if($row["shopPicture"]) {echo $row["shopPicture"];} else{echo "/noimage/1_II52xSQJ4RKcLwVMLKjgog.png";} ?>" alt="NULL" width="50" height="50">   </td>
         <td><?php echo $row["shopName"] ?></td>
         <td><?php echo $row["shopID"] ?></td>
         <td><?php echo $row["price"] ?></td>

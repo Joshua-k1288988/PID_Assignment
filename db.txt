@@ -5,6 +5,7 @@ CREATE TABLE userList(
     userName varchar(20),
     userID varchar(20) PRIMARY KEY,
     password varchar(100),
+    address varchar(100),
     whiteORblack int
 );
 
@@ -21,6 +22,7 @@ CREATE TABLE orderList(
     userID varchar(20),
     sum int ,
     time varchar(30),
+    address varchar(100),
     comp varchar(10)
 );
 

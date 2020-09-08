@@ -1,5 +1,6 @@
 <?php  
     session_start();
+    if($_SESSION["sum"] == 0){echo "<script>alert('操作失敗！');location.href='index.php';</script>"; exit();}
     if(! $_SESSION["userID"]){
         header("Location: index.php");
         exit();
@@ -46,6 +47,12 @@
         WHERE orderID = $orderID;
         ";
         mysqli_query($link, $sql);
-    mysqli_close($link);
 
+        require("linksql.php");
+        $sql = "
+        DELETE FROM `shoppingcar` WHERE `shoppingcar`.`userID` = '$userID';
+        ";
+        mysqli_query($link, $sql);
+        mysqli_close($link);
+        echo "<script>alert('購買成功！');location.href='index.php';</script>"; exit();
 ?>

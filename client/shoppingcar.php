@@ -1,3 +1,4 @@
+<br><br><br><br>
 <?php
     session_start();
     if(! $_SESSION["userID"]){
@@ -6,6 +7,22 @@
     }
     $userID = $_SESSION["userID"];
     require("linksql.php");
+
+    if($_SESSION["userID"]){
+      $userID = $_SESSION["userID"];
+      $sql = "
+      select whiteORblack
+      from userList
+      where userID = '$userID';
+      ";
+      $worb = mysqli_fetch_assoc(mysqli_query($link, $sql));
+      if($worb["whiteORblack"] == 1){
+        echo "<script>alert('該帳號目前無法使用');location.href='index.php';</script>";
+        $_SESSION = array();
+        exit();
+      }
+    }
+
     $sql = "
     SELECT * FROM `shoppingcar` WHERE userID = '$userID';
     ";
@@ -54,7 +71,13 @@
             <a class="nav-link ">|</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="loginout.php">登出</a>
+          <a class="nav-link " href="orders.php">查看訂單</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link ">|</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="loginout.php">登出</a>
         </li>
         <?php } ?>
     </ul>
@@ -74,7 +97,7 @@
     <tbody>
     <?php while($row = mysqli_fetch_assoc($revalue)) { ?>
       <tr>
-        <td><img src="http://localhost/PID_Assignment/client/image/<?php if($row["shopPicture"]) {echo $row["shopPicture"];} else{echo "1_II52xSQJ4RKcLwVMLKjgog.png";} ?>" alt="NULL" width="50" height="50">   </td>
+        <td><img src="http://localhost/PID_Assignment/client/image/<?php if($row["shopPicture"]) {echo $row["shopPicture"];} else{echo "noimage/1_II52xSQJ4RKcLwVMLKjgog.png";} ?>" alt="NULL" width="50" height="50">   </td>
         <td><?php echo $row["shopName"] ?></td>
         <td><?php echo $row["shopID"] ?></td>
         <td><?php echo $row["price"] ?></td>
@@ -97,7 +120,7 @@
     <script>
     function lastone(){
         if (confirm("確認是否購買")) {
-            
+            <?php $_SESSION["sum"] = $sum; ?>
             location.href = "buyshop.php";
         }
     }

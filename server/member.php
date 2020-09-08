@@ -1,7 +1,7 @@
 <?php
 require("linksql.php");
 $sqlsetconnect = <<<multi
-    select userName, userID, whiteORblack
+    select *
     from userList 
 multi;
 $resulut = mysqli_query($link , $sqlsetconnect);
@@ -29,6 +29,7 @@ $resulut = mysqli_query($link , $sqlsetconnect);
       <tr>
         <th>會員名字</th>
         <th>帳號</th>
+        <th>地址</th>
         <th>狀態</th>
       </tr>
     </thead>
@@ -37,6 +38,7 @@ $resulut = mysqli_query($link , $sqlsetconnect);
       <tr>
         <td><?php echo $row["userName"] ?></td>
         <td><?php echo $row["userID"] ?></td>
+        <td><?php echo $row["address"] ?></td>
         <td><?php if((int)$row["whiteORblack"] == 0){echo "正常";} else{echo "黑名單";}   ?></td>
         <td>
             <span class = "float-right">

@@ -1,7 +1,23 @@
 <?php
-$userID = $_GET["userid"];
+    session_start();
+    $userID = $_SESSION["userID"];
 
-require("linksql.php");
+    require("linksql.php");
+    if($_SESSION["userID"]){
+        $userID = $_SESSION["userID"];
+        $sql = "
+        select whiteORblack
+        from userList
+        where userID = '$userID';
+        ";
+        $worb = mysqli_fetch_assoc(mysqli_query($link, $sql));
+        if($worb["whiteORblack"] == 1){
+          echo "<script>alert('該帳號目前無法使用');location.href='index.php';</script>";
+          $_SESSION = array();
+          exit();
+        }
+    }
+
     $sql = "
     select *
     FROM orderList
@@ -11,21 +27,59 @@ require("linksql.php");
     $revalue = mysqli_query($link, $sql);
     mysqli_close($link);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>訂單清單</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單查看</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="container" style="margin-top:80px">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <a class="navbar-brand" href="index.php">回首頁</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="nav navbar-nav mr-auto">
+        </ul>
+
+        <ul class="nav navbar-nav "> <!-- d-none -->
+            <li class="nav-item <?php if(@$_SESSION["userID"] != ""){echo "d-none";} ?>">
+            <a class="nav-link " href="login.php">登入</a>
+            </li>
+            <li class="nav-item <?php if(@$_SESSION["userID"] != ""){echo "d-none";} ?>">
+            <a class="nav-link ">|</a>
+            </li>
+            <li class="nav-item <?php if(@$_SESSION["userID"] != ""){echo "d-none";} ?>">
+            <a class="nav-link " href="signup.php">註冊</a>
+            </li>
+
+            <?php if(@$_SESSION["userID"] != ""){?>
+            <li class="nav-item">
+                <a class="nav-link ">您好，<?= $_SESSION["userName"] ?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link ">|</a>
+            </li>
+        <li class="nav-item">
+        <a class="nav-link " href="shoppingcar.php">購物車</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link ">|</a>
+        </li>
+            <li class="nav-item">
+                <a class="nav-link " href="loginout.php">登出</a>
+            </li>
+            <?php } ?>
+        </ul>
+    </nav>
+    
+    <div class="container" style="margin-top:80px">
         <h2>訂單查看</h2>
         <div id="accordion">
             <?php while($row = mysqli_fetch_assoc($revalue)){ $orderID = $row["orderID"] ;?>
@@ -64,7 +118,7 @@ require("linksql.php");
                             <tbody>
                             <?php while($buy = mysqli_fetch_assoc($buylist)) { ?>
                             <tr>
-                                <td><img src="http://localhost/PID_Assignment/client/image/<?php if($buy["shopPicture"]) {echo $buy["shopPicture"];} else{echo "1_II52xSQJ4RKcLwVMLKjgog.png";} ?>" alt="NULL" width="50" height="50">   </td>
+                                <td><img src="http://localhost/PID_Assignment/client/image/<?php if($buy["shopPicture"]) {echo $buy["shopPicture"];} else{echo "noimage/1_II52xSQJ4RKcLwVMLKjgog.png";} ?>" alt="NULL" width="50" height="50">   </td>
                                 <td><?php echo $buy["shopName"] ?></td>
                                 <td><?php echo $buy["shopID"] ?></td>
                                 <td><?php echo $buy["price"] ?></td>
@@ -79,7 +133,6 @@ require("linksql.php");
                             <h4>總共：＄<?= $sum ?> 元</h4>
                             <?php if($row["comp"] == '0') {
                                     echo "<h4>訂單狀態：未完成</h4>";
-                                    echo "<a href='comp.php?orderID=$orderID' class = 'btn-outline-success btn'>完成訂單</a>";
                                 }else{
                                     echo "<h4>訂單狀態：已完成</h4>";
                                 }
@@ -91,11 +144,5 @@ require("linksql.php");
             <?php } ?>
         </div>
     </div>
-
-    
-  <div class="container text-center">
-    <br><hr>
-    <a href="usecontrol.php" class = "btn-outline-info btn ">返回首頁</a>
-  </div>
 </body>
 </html>

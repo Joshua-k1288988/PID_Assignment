@@ -2,6 +2,22 @@
   session_start();
   $shpID = $_GET["shopID"];
   require("linksql.php");
+
+  if($_SESSION["userID"]){
+    $userID = $_SESSION["userID"];
+    $sql = "
+    select whiteORblack
+    from userList
+    where userID = '$userID';
+    ";
+    $worb = mysqli_fetch_assoc(mysqli_query($link, $sql));
+    if($worb["whiteORblack"] == 1){
+      echo "<script>alert('該帳號目前無法使用');location.href='shoplook.php?shopID=$shpID';</script>";
+      $_SESSION = array();
+      exit();
+    }
+  }
+
   $sql = "
   select *
   FROM shopList
@@ -68,7 +84,7 @@
     <div class="container" style="margin-top:80px">
         <div class="card col-12" style="  width:100%">
             <div class = "row">
-                <div class = "col-4"><img class="card-img-top" src="image/<?= $row["shopPicture"] ?>" alt="Card image" style="width:250px"></div>
+                <div class = "col-4"><img class="card-img-top" src="image/<?php if($row["shopPicture"]){echo $row["shopPicture"];}else{ echo "/noimage/1_II52xSQJ4RKcLwVMLKjgog.png"; }  ?>" alt="Card image" style="width:250px"></div>
                 <div class = "col-1"></div>
                 <div class="card-body col-6">
                     <h4 class="card-title"><?= $row["shopName"] ?></h4>

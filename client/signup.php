@@ -36,6 +36,12 @@
             </div>
         </div> 
         <div class="form-group row">
+            <label for="user" class="col-4 col-form-label">地址</label> 
+            <div class="col-8">
+            <input id="address" name="address" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group row">
             <div class="offset-4 col-8">
             <button name="btnOK" type="submit" class="btn btn-primary">確認註冊</button>
             </div>
@@ -44,28 +50,35 @@
 
     <?php
         if(isset($_POST["btnOK"])){
-            if($_POST["password"] != $_POST["repassword"]){
-                echo "<script> alert('兩次密碼不一致');</script>";
+            if($_POST["user"] == "" || $_POST["userID"] == "" || $_POST["password"] == "" || $_POST["repassword"] == "" || $_POST["address"] == ""){
+                echo "<script> alert('不可以空白');</script>";
                 exit();
-            }
-            $user = $_POST["user"];
-            $userID = $_POST["userID"];
-            $password = $_POST["password"];
-            $hash = password_hash($password , PASSWORD_DEFAULT );
+            }else{
+               if($_POST["password"] != $_POST["repassword"]){
+                    echo "<script> alert('兩次密碼不一致');</script>";
+                    exit();
+                }
+                $user = $_POST["user"];
+                $userID = $_POST["userID"];
+                $password = $_POST["password"];
+                $hash = password_hash($password , PASSWORD_DEFAULT );
+                $address = $_POST["address"];
 
-            require("linksql.php");
-            $sql = "INSERT INTO userList (`userName`, `UserID`, `password`, `whiteORblack`) VALUES
-            ('$user', '$userID', '$hash' , 0);";
-            $revalue = mysqli_query($link, $sql);
-            // var_dump($revalue);
-            if($revalue == false){
-                echo "<script> alert('警告：註冊失敗，帳號重複');</script>";
+                require("linksql.php");
+                $sql = "INSERT INTO userList (`userName`, `UserID`, `password`, `address`, `whiteORblack`) VALUES
+                ('$user', '$userID', '$hash', '$address', 0);";
+                $revalue = mysqli_query($link, $sql);
+                // var_dump($revalue);
+                if($revalue == false){
+                    echo "<script> alert('警告：註冊失敗，帳號重複');</script>";
+                }
+                else{
+                    mysqli_close($link);
+                    echo "<script> alert('註冊成功'); location.href ='index.php';</script>";
+                    exit();
+                } 
             }
-            else{
-                mysqli_close($link);
-                echo "<script> alert('註冊成功'); location.href ='index.php';</script>";
-                exit();
-            }
+            
         }
     ?>
 </body>
