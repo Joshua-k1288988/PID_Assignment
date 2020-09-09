@@ -10,9 +10,9 @@
 <body>
 
     <?php
-            $user = "Joker";
-            $userID = "root01";
-            $password = "1234";
+            $user = "Rooter"; // 管理者名字
+            $userID = "root02"; // 帳號
+            $password = "1234"; // 密碼
             $hash = password_hash($password , PASSWORD_DEFAULT );
 
             require("linksql.php");
@@ -21,11 +21,11 @@
             $revalue = mysqli_query($link, $sql);
             // var_dump($revalue);
             if($revalue == false){
-                echo "<script> alert('警告：註冊失敗，帳號重複');</script>";
+                echo "<script> alert('警告：註冊失敗，帳號重複'); location.href ='index.php';</script>";
             }
             else{
                 mysqli_close($link);
-                echo "<script> alert('註冊成功'); location.href ='server/index.php';</script>";
+                echo "<script> alert('註冊成功'); location.href ='index.php';</script>";
                 exit();
             }
     ?>

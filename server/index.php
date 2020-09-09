@@ -42,6 +42,7 @@
     <div class="form-group row">
         <div class="offset-4 col-8">
         <button name="login" type="submit" class="btn btn-primary">登入</button>
+        <button name="signup" type="submit" class="btn btn-outline-danger">註冊</button>
         </div>
     </div>
     </form>
@@ -73,6 +74,11 @@
                     echo "<p class='text-danger text-center'>帳號或密碼錯誤</p>";
                 }
             }
+        }
+
+        if(isset($_POST["signup"])){
+            header("Location: signuproot.php");
+            exit();
         }
     ?>
 </body>

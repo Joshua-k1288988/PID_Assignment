@@ -1,12 +1,12 @@
 <?php 
+
+  session_start();
   if(isset($_POST["btnOK"])){
     $_SESSION["address"] = $_POST["address"];
     header("Location: buyshop.php");
     exit();
   }  
-?>
-<?php
-    session_start();
+  
     if(! $_SESSION["userID"]){
       header("Location: index.php");
       exit();
