@@ -36,7 +36,7 @@
             </div>
         </div> 
         <div class="form-group row">
-            <label for="user" class="col-4 col-form-label">地址</label> 
+            <label for="address" class="col-4 col-form-label">地址</label> 
             <div class="col-8">
             <input id="address" name="address" type="text" class="form-control">
             </div>

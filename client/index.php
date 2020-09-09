@@ -97,12 +97,12 @@
 
 
 <div class="container-fluid" style="margin-top:80px">
-  <div class="container card-deck card-columns">
+  <div class="container  card-columns">
     <?php while($row = mysqli_fetch_assoc($revalue)){  ?>
       <div class="card" style="  width:300px">
         <img class="card-img-top" src="image/<?php if($row["shopPicture"]){echo $row["shopPicture"];}else{ echo "/noimage/1_II52xSQJ4RKcLwVMLKjgog.png"; }  ?>" alt="Card image" style="width:100%">
         <div class="card-body">
-          <h4 class="card-title"><?= $row["shopName"] ?></h4>
+          <h5 class="card-title"><?= $row["shopName"] ?></h5>
           <p class="card-text">$<?= $row["price"] ?></p>
           <a href="shoplook.php?shopID=<?= $row["shopID"] ?>" class="btn btn-primary">查看詳情</a>
         </div>

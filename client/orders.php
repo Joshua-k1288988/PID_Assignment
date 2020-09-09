@@ -91,7 +91,8 @@
                 </div>
                 <div id="d<?= $row["orderID"] ?>" class="collapse" data-parent="#accordion">
                     <div class="card-body">
-                        <?= $row["time"] ?>
+                        <?= $row["time"] ?><br>
+                        地址：<?= $row["address"]  ?>
                         <?php 
                             require("linksql.php");
                             $sql = "

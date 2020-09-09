@@ -6,13 +6,14 @@
         exit();
     }
     $userID = $_SESSION["userID"];
+    $address = $_SESSION["address"];
 
     $orderID = time();
     $time = date("Y年m月d日 H:i:s", $orderID );
     require("linksql.php");
     $sql = "
-    INSERT INTO `orderList`(`orderID`, `userID`, `time`, `comp`) VALUES
-    ($orderID, '$userID', '$time', '0');
+    INSERT INTO `orderList`(`orderID`, `userID`, `time`, `address`, `comp`) VALUES
+    ($orderID, '$userID', '$time', '$address', '0');
     ";
     mysqli_query($link, $sql);
 

@@ -1,4 +1,10 @@
-<br><br><br><br>
+<?php 
+  if(isset($_POST["btnOK"])){
+    $_SESSION["address"] = $_POST["address"];
+    header("Location: buyshop.php");
+    exit();
+  }  
+?>
 <?php
     session_start();
     if(! $_SESSION["userID"]){
@@ -114,17 +120,29 @@
   <hr class = "border-dark">
 </div>
 
-<div class="container text-right">
-    <h4>總共：＄<?= $sum ?> 元</h4>
-    <a id = "btnOK" class = "btn-outline-info btn " onclick = "lastone();">購買</a>
-    <script>
-    function lastone(){
-        if (confirm("確認是否購買")) {
-            <?php $_SESSION["sum"] = $sum; ?>
-            location.href = "buyshop.php";
-        }
-    }
-    </script>
-</div>
+<?php 
+  require("linksql.php");
+  $sql = "
+    SELECT address FROM `userList` WHERE userID = '$userID';
+    ";
+  $address = mysqli_fetch_assoc(mysqli_query($link, $sql)); 
+  mysqli_close($link);
+
+  $_SESSION["sum"] = $sum;
+?>
+<form  method = "post">
+  <div class="container text-right">
+      <h4>總共：＄<?= $sum ?> 元</h4>
+      <div class="form-group row">
+              <label for="address" class="col-4 col-form-label">地址</label> 
+              <div class="col-8">
+              <input name="address" type="text" class="form-control" value = "<?= $address["address"] ?>">
+              </div>
+      </div>
+      <button id = "btnOK" name = "btnOK" type = "submit" class = "btn-outline-info btn ">購買</buttom>
+      
+  </div>
+</form>
+
 </body>
 </html>

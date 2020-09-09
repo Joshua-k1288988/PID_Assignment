@@ -44,7 +44,7 @@ $resulut = mysqli_query($link , $sqlsetconnect);
         <td><?php echo $row["price"] ?></td>
         <td><?php echo $row["shopLab"] ?></td>
         <td>
-            <span class = "float-right">
+            <span class = "float-right row">
                 <a href="./changshop.php?shopid=<?php echo $row["shopID"] ?>" class = "btn-outline-success btn-sm">修改</a>
                 |
                 <a href="./deleteshop.php?shopid=<?php echo $row["shopID"] ?>&pict=<?php echo $row["shopPicture"] ?>" class = "btn-outline-danger btn-sm">刪除</a>
