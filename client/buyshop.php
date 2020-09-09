@@ -55,5 +55,5 @@
         ";
         mysqli_query($link, $sql);
         mysqli_close($link);
-        echo "<script>alert('購買成功！');location.href='index.php';</script>"; exit();
+        echo "<script>alert('購買成功！');location.href='final.php?userID=$userID&orderID=$orderID';</script>"; exit();
 ?>

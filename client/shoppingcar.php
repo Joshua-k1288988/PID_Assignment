@@ -2,11 +2,15 @@
 
   session_start();
   if(isset($_POST["btnOK"])){
-    $_SESSION["address"] = $_POST["address"];
-    header("Location: buyshop.php");
-    exit();
+    if($_POST["address"] == ""){
+      echo "<script> alert('請輸入地址'); </script>";
+    }else{
+      $_SESSION["address"] = $_POST["address"];
+      header("Location: buyshop.php");
+      exit();
+    }
   }  
-  
+
     if(! $_SESSION["userID"]){
       header("Location: index.php");
       exit();
@@ -127,7 +131,8 @@
     ";
   $address = mysqli_fetch_assoc(mysqli_query($link, $sql)); 
   mysqli_close($link);
-
+      // var_dump($address);
+      // echo $userID;
   $_SESSION["sum"] = $sum;
 ?>
 <form  method = "post">

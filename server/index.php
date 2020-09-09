@@ -65,7 +65,7 @@
             else{
                 $row = mysqli_fetch_assoc($revalue); 
                 if(password_verify($_POST["userPassword"], $row["password"])){
-                    $_SESSION["userID"] = $row["userID"];
+                    $_SESSION["rootID"] = $row["userID"];
                     // echo $_SESSION["userID"];
                     header("Location: usecontrol.php");
                     exit();

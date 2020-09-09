@@ -1,11 +1,11 @@
 <?php 
     session_start();
-    if(@$_SESSION["userID"] == ""){
+    if(@$_SESSION["rootID"] == ""){
         echo "<h2>違法操作，請重新登入</h2>";
         echo "<a href='index.php'>回首頁</a>";
         exit();
     }else{
-        $userID = $_SESSION["userID"];
+        $userID = $_SESSION["rootID"];
     }
     require("linksql.php");
         $sql = "select userName, userID, password
@@ -15,7 +15,7 @@
     $row = mysqli_fetch_assoc($revalue);
     mysqli_close($link);
     if(isset($_POST["loginout"])){
-        $_SESSION = array();
+        $_SESSION["rootID"] = "";
         echo "<script> alert('登出成功'); location.href ='index.php';</script>";
         exit();
     }
